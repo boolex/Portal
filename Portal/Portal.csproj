@@ -49,24 +49,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Articles\Article.cs" />
+    <Compile Include="Migrations\201904240749247_AddedArticleComments.cs" />
+    <Compile Include="Migrations\201904240749247_AddedArticleComments.Designer.cs">
+      <DependentUpon>201904240749247_AddedArticleComments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904240755099_AddedArticlePage.cs" />
+    <Compile Include="Migrations\201904240755099_AddedArticlePage.Designer.cs">
+      <DependentUpon>201904240755099_AddedArticlePage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Page.cs" />
     <Compile Include="Comment.cs" />
-    <Compile Include="Migrations\201904230813221_RemovedDiscriminatorInArticles.cs" />
-    <Compile Include="Migrations\201904230813221_RemovedDiscriminatorInArticles.Designer.cs">
-      <DependentUpon>201904230813221_RemovedDiscriminatorInArticles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904230816470_RemovedDiscriminatorInArticles2.cs" />
-    <Compile Include="Migrations\201904230816470_RemovedDiscriminatorInArticles2.Designer.cs">
-      <DependentUpon>201904230816470_RemovedDiscriminatorInArticles2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904230817204_RemovedDiscriminatorInArticles3.cs" />
-    <Compile Include="Migrations\201904230817204_RemovedDiscriminatorInArticles3.Designer.cs">
-      <DependentUpon>201904230817204_RemovedDiscriminatorInArticles3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904230824203_RemovedDiscriminatorInArticles4.cs" />
-    <Compile Include="Migrations\201904230824203_RemovedDiscriminatorInArticles4.Designer.cs">
-      <DependentUpon>201904230824203_RemovedDiscriminatorInArticles4.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Articles\MsSqlPersistentArticle.cs" />
     <Compile Include="Articles\PersistentArticle.cs" />
@@ -82,18 +74,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904230813221_RemovedDiscriminatorInArticles.resx">
-      <DependentUpon>201904230813221_RemovedDiscriminatorInArticles.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904240749247_AddedArticleComments.resx">
+      <DependentUpon>201904240749247_AddedArticleComments.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904230816470_RemovedDiscriminatorInArticles2.resx">
-      <DependentUpon>201904230816470_RemovedDiscriminatorInArticles2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904240755099_AddedArticlePage.resx">
+      <DependentUpon>201904240755099_AddedArticlePage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904230817204_RemovedDiscriminatorInArticles3.resx">
-      <DependentUpon>201904230817204_RemovedDiscriminatorInArticles3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904230824203_RemovedDiscriminatorInArticles4.resx">
-      <DependentUpon>201904230824203_RemovedDiscriminatorInArticles4.cs</DependentUpon>
-    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

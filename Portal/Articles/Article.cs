@@ -1,8 +1,10 @@
-﻿namespace Portal
+﻿using System.Collections.Generic;
+
+namespace Portal
 {
     public class Article
     {
-        protected Article() { }
+        public Article() { }
         public Article(Article article)
         {
             if (article != null)
@@ -18,8 +20,9 @@
             Title = title;
             Content = content;
         }
-        public int Id { get; protected set; }
-        public string Title { get; protected set; }
-        public string Content { get; protected set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }

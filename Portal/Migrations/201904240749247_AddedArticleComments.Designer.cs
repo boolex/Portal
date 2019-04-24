@@ -7,13 +7,13 @@ namespace Portal.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class RemovedDiscriminatorInArticles4 : IMigrationMetadata
+    public sealed partial class AddedArticleComments : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemovedDiscriminatorInArticles4));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedArticleComments));
         
         string IMigrationMetadata.Id
         {
-            get { return "201904230824203_RemovedDiscriminatorInArticles4"; }
+            get { return "201904240749247_AddedArticleComments"; }
         }
         
         string IMigrationMetadata.Source

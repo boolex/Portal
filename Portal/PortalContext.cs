@@ -11,28 +11,28 @@ namespace Portal
         { }
 
         public DbSet<Article> Articles { get; set; }
-        public DbSet<Page> Pages { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<ArticlePage> ArticlePages { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Article>()
-                .HasKey(x=>x.Id)
+                .HasKey(x => x.Id)
                 .Property(x => x.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            modelBuilder.Entity<Page>().HasRequired(x => x.Article);
-            modelBuilder.Entity<Page>().HasKey(x => x.Article);
+            modelBuilder.Entity<Comment>()
+            .HasRequired<Article>(s => s.Article)
+            .WithMany(g => g.Comments)
+            .HasForeignKey<int>(s => s.ArticleId);
 
-            modelBuilder.Entity<Comment>().HasRequired(x => x.Article);
-            modelBuilder.Entity<Comment>().HasRequired(x => x.Article).WithMany().HasForeignKey(x => x.ArticleId);
+            modelBuilder.Entity<ArticlePage>()
+               .HasKey(x => x.Id)
+               .Property(x => x.Id)
+               .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            modelBuilder.Entity<Social>().HasRequired(x => x.Article);
-            modelBuilder.Entity<Social>().HasRequired(x => x.Article).WithMany().HasForeignKey(x => x.ArticleId);
-
-            modelBuilder.Entity<Stats>().HasRequired(x => x.Article);
-            modelBuilder.Entity<Stats>().HasRequired(x => x.Article).WithMany().HasForeignKey(x => x.ArticleId);
+            modelBuilder.Entity<ArticlePage>().HasRequired(x => x.Article);
         }
     }
 }
