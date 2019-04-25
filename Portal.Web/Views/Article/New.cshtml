@@ -1,0 +1,109 @@
+﻿@using System.Web.UI.WebControls
+@model Portal.Web.Models.ArticlePageViewModel
+
+@{
+    ViewBag.Title = "View1";
+}
+<link rel="stylesheet" href="/Scripts/CodeMirror/lib/codemirror.css">
+<script src="/Scripts/CodeMirror/lib/codemirror.js"></script>
+<script src="~/Scripts/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
+<script src="~/Scripts/CodeMirror/mode/xml/xml.js"></script>
+<script src="~/Scripts/jquery-1.12.4.js"></script>
+<script src="~/Scripts/jquery-ui.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.structure.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.theme.css" rel="stylesheet" />
+<div style="width: 1100px; margin: 0 auto;">
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">Edit</a></li>
+        <li><a href="#tabs-2">View</a></li>
+    </ul>
+    <div id="tabs-1">
+        @using (Html.BeginForm("New", "Article", FormMethod.Post))
+        {
+            <table style="width: 100%">
+                <tr>
+                    <td>Title</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayTextFor(x => x.Id)
+                        @Html.TextAreaFor(x => x.Title, new {id = "title", @class = "stretch title-text"})
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>Content</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black;">
+                        @Html.TextAreaFor(x => x.Content, new {id = "content", @class = "stretch content-text"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <hr/>
+                        <button type="submit" style="font-size: 50px; font-family: Garamond; padding: 10px 160px 10px 160px;">Create</button>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+    <div id="tabs-2">
+        <div>
+            <h1 id="articleTitle">@Model.Title</h1>
+            <div id="articleBody">
+                @Model.Content
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+<script>
+    var onStart = function () {
+        registerEditor();
+        initializePreview();
+        showTabs();
+    }
+    window.onload = onStart;
+    function registerEditor() {
+        window.editor = CodeMirror.fromTextArea(content, {
+            lineNumbers: true,
+            lineWrapping: true,
+            mode: "text/html"
+        });
+    }
+    function initializePreview() {
+        window.editor.on("change", function (cm, change) {
+            document.getElementById("articleBody").innerHTML = cm.getValue();
+        });
+        document.getElementById("title").addEventListener("change", function () {
+            document.getElementById("articleTitle").innerHTML = document.getElementById("title").value;
+        });
+    }
+    function showTabs() {
+        $("#tabs").tabs();
+    }
+</script>
+<style>
+    body, table {
+        font-family: "Garamond";
+        font-size: 50px;
+    }
+
+    .stretch {
+        width: 100%;
+    }
+
+    .title-text {
+        font-size: 50px;
+        margin-left: 0px;
+    }
+
+    .content-text {
+        font-size: 20px;
+        margin-left: 0px;
+    }
+</style>
+

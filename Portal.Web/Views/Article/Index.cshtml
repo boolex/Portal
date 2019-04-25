@@ -1,0 +1,26 @@
+﻿@model Portal.Web.Models.ArticleCatalogViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<table>
+    <tr>
+        <td>
+            @Html.ActionLink("Create", "New", new {controller = "Article"})
+        </td>
+    </tr>
+    @foreach (var page in Model.Articles)
+    {
+        <tr>
+            <td>@page.Id</td>
+            <td>
+                @Html.ActionLink(@page.Title, "New", new {controller = "Article", id = @page.Id})
+
+            </td>
+        </tr>
+
+
+    }
+</table>
