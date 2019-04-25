@@ -23,9 +23,20 @@ namespace Portal.Web.Controllers
                 {
                     try
                     {
-                        article = context.Articles.Add(viewModel.Article());
+                        if (viewModel.Id.HasValue)
+                        {
+                            article = context.Articles.FirstOrDefault(x => x.Id == viewModel.Id.Value);
+                            article.Title = viewModel.Title;
+                            article.Content = viewModel.Content;
+                            context.SaveChanges();
+                        }
+                        else
+                        {
+                            article = context.Articles.Add(viewModel.Article());
+                            context.SaveChanges();
+                        }
                        // context.ArticlePages.Add(viewModel.Page());
-                        context.SaveChanges();
+                       
                         transaction.Commit();
                     }
                     catch (Exception ex)

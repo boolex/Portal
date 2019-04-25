@@ -12,14 +12,14 @@ namespace Portal.Web.Models
             Title = article.Title;
             Content = article.Content;
         }
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Title { get; set; }
         [AllowHtml]
         public string Content { get; set; }
         public Comment Comments { get; set; }
         public Article Article()
         {
-            return new Article(id: Id, title: Title, content: Content);
+            return new Article(id: Id.HasValue ? Id.Value : 0, title: Title, content: Content);
         }
 
         public ArticlePage Page()

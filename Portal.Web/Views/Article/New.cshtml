@@ -14,6 +14,7 @@
 <link href="~/Content/jquery-ui.structure.css" rel="stylesheet" />
 <link href="~/Content/jquery-ui.theme.css" rel="stylesheet" />
 <div style="width: 1100px; margin: 0 auto;">
+    @Html.ActionLink("Articles", "Index", new { controller = "Article" })
 <div id="tabs">
     <ul>
         <li><a href="#tabs-1">Edit</a></li>
@@ -44,7 +45,7 @@
                 <tr>
                     <td>
                         <hr/>
-                        <button type="submit" style="font-size: 50px; font-family: Garamond; padding: 10px 160px 10px 160px;">Create</button>
+                        <button type="submit" style="font-size: 50px; font-family: Garamond; padding: 10px 160px 10px 160px;">Create or save</button>
                     </td>
                 </tr>
             </table>
