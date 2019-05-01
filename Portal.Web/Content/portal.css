@@ -1,0 +1,12 @@
+﻿body, table {
+    font-family: "Garamond";
+    font-size: 50px;
+}
+
+.main {
+    width: 1200px;
+    margin: 0 auto;
+    font-family: "Garamond";
+    font-size: 50px;
+    color: #3d3d3d;
+}

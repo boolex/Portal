@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Portal.Articles;
-using Portal.Web.Models;
 namespace Portal.Web.Controllers
 {
+    using Portal.Articles;
+    using Portal.Web.Models;
     public class ArticleController : Controller
     {
         [HttpGet]
         public ActionResult New(int id = 0)
         {
-            return View(new ArticlePageViewModel(Fetch(new Article(id: id, title: null, content: null))));
+            return View(new ArticlePageViewModel(Fetch(new Article(id: id, title: null, content: null))));             
         }
         [HttpPost]
         public ActionResult New(ArticlePageViewModel viewModel)
@@ -35,8 +35,8 @@ namespace Portal.Web.Controllers
                             article = context.Articles.Add(viewModel.Article());
                             context.SaveChanges();
                         }
-                       // context.ArticlePages.Add(viewModel.Page());
-                       
+                        // context.ArticlePages.Add(viewModel.Page());
+
                         transaction.Commit();
                     }
                     catch (Exception ex)
@@ -45,7 +45,14 @@ namespace Portal.Web.Controllers
                     }
                 }
             }
-            return View(new ArticlePageViewModel(article: article));
+            if (article.Id != 0)
+            {
+                return RedirectToAction("New", new { id = article.Id });
+            }
+            else
+            {
+                return View(new ArticlePageViewModel(article: article));
+            }
         }
         [HttpGet]
         public ActionResult Index()
@@ -68,6 +75,11 @@ namespace Portal.Web.Controllers
             {
                 return context.Articles.FirstOrDefault(x => x.Id == article.Id);
             }
+        }
+        [HttpGet]
+        public ActionResult View(int id)
+        {
+            return View(new ArticlePageViewModel(Fetch(new Article(id: id, title: null, content: null))));    
         }
     }
 }

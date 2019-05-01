@@ -1,0 +1,199 @@
+﻿@model Portal.Web.Models.ImageCatalogViewModule
+
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-1.12.4.js"></script>
+<script src="~/Scripts/jquery-ui.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.structure.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.theme.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.filedrop.js"></script>
+<script src="~/Scripts/jquery-notify.js"></script>
+<link href="~/Scripts/jqueryTagsInput/jquery.tagsinput.css" rel="stylesheet" />
+
+<h2>Index</h2>
+<h2>Drag & Drop file upload </h2>
+<div id="dropArea">
+    Drop your files here
+</div>
+<h4>Uploaded files : </h4>
+<ul class="list-group" id="uploadList"></ul>
+
+<div id="pictureCatalog" style="width:100%">
+    @foreach (var im in Model.Images())
+    {
+        <a class="picture" name="@im" href="javascript:void(0)">  <img src='@Url.Action("Thumb", "Image", new {name=im})' class="thumb" /></a>
+    }
+</div>
+
+<style>
+    .thumb {
+        width: 250px;
+    }
+</style>
+<style>
+    #dropArea {
+        background: #b5b5b5;
+        border: black dashed 1px;
+        height: 50px;
+        text-align: center;
+        color: #fff;
+        padding-top: 12px;
+    }
+
+    .active-drop {
+        background: #77bafa !important;
+        border: solid 2px blue !important;
+        opacity: .5;
+        color: black !important;
+    }
+</style>
+<script src="~/Scripts/jQuery.FileUpload/jquery.fileupload.js"></script>
+<script src="~/Scripts/jQuery.FileUpload/jquery.fileupload-ui.js"></script>
+
+<script src="~/Scripts/jQuery.FileUpload/jquery.iframe-transport.js"></script>
+
+<script src="~/Scripts/jqueryTagsInput/jquery.tagsinput.js"></script>
+<script type="text/javascript">
+    $(function () {
+        window.dialog = $("#pictureDetailsDialog").dialog({
+            autoOpen: false,
+            height: 900,
+            width: 1050,
+            modal: false,
+            buttons: {
+                "Save": Save,
+                Cancel: function () {
+                    dialog.dialog("close");
+                }
+            },
+            close: function () {
+            }
+        });
+        $('#dropArea').filedrop({
+            url: '@Url.Action("UploadFiles", "Image")',
+            allowedfiletypes: ['image/jpeg', 'image/png', 'image/gif'],
+            allowedfileextensions: ['.jpg', '.jpeg', '.png', '.gif'],
+            paramname: 'files',
+            maxfiles: 5,
+            maxfilesize: 5, // in MB
+            dragOver: function () {
+                $('#dropArea').addClass('active-drop');
+            },
+            dragLeave: function () {
+                $('#dropArea').removeClass('active-drop');
+            },
+            drop: function () {
+                $('#dropArea').removeClass('active-drop');
+            },
+            afterAll: function (e) {
+                $('#dropArea').html('file(s) uploaded successfully');
+            },
+            uploadFinished: function (i, file, response, time) {
+                var name = file.name;
+                var linkElement = insertPictureToCatalog(response.name);
+                showManageImagePanelOnClick(linkElement);
+                //$('#uploadList').append('<li class="list-group-item"><img src="Image/View/'+file.name+'"/></li>')
+            }
+        });
+        $("#tags").tagsInput({
+            'autocomplete_url': "Tag/List",
+            'autocomplete': { option: "abs", option: "abbfd"},
+            'height': '100px',
+            'width': '300px',
+            'interactive': true,
+            'defaultText': 'add a tag',
+            'onAddTag': function () { },
+            'onRemoveTag': function () { },
+            'onChange': function () { },
+            'delimiter': [',', ';'],   // Or a string with a single delimiter. Ex: ';'
+            'removeWithBackspace': true,
+            'minChars': 0,
+            'maxChars': 0, // if not provided there is no limit
+            'placeholderColor': '#666666'
+        });
+    });
+    function insertPictureToCatalog(name) {
+        var img = document.createElement("img");
+        img.src = "/Image/Thumb/?name=" + name;
+        img.classList.add("thumb");
+
+        var imgLink = document.createElement("a");
+        imgLink.appendChild(img);
+        imgLink.classList.add("picture");
+        imgLink.setAttribute("name", name);
+        imgLink.setAttribute("href", "javascript:void(0)");
+
+        pictureCatalog.insertBefore(imgLink, pictureCatalog.childNodes[0]);
+        return imgLink;
+    }
+    function imageSelected(name) {
+        dialogPicture.setAttribute("src", "Image/View?name=" + name);
+        document.getElementById("pictureName").value = name;
+        window.dialog.dialog("open");
+    }
+    function showManageImagePanelOnClick(pictureElement) {
+        pictureElement.addEventListener("click", function () {
+            var name = pictureElement.getAttribute("name");
+            imageSelected(name);
+        });
+    }
+    var pictures = document.getElementsByClassName("picture");
+    for (var i = 0; i < pictures.length; i++) {
+        showManageImagePanelOnClick(pictures[i]);
+    }
+    function updateImagePost(name, attrs) {
+        $.post("Image/Update", { name: name, attributes: attrs })
+        .done(function (data) {
+            alert("Data Loaded: " + data);
+        }).fail(function () {
+            alert("error");
+        }).always(function () {
+            alert("finished");
+        });
+    }
+    function savePic() {
+
+    }
+    function Save() {
+        var name = document.getElementById("pictureName").value;
+        var attributes = {};
+        var image = { name: name, attributes: attributes };
+        UpdateImageAttributes(name, attributes);
+    }
+    function UpdateImageAttributes(image) {
+        updateImagePost(image.name, image.attributes);
+    }
+   
+</script>
+<div id="pictureDetailsDialog" title="Picture details" style="background-color: #034E5A">
+    
+    <p class="validateTips">
+        <input type="text" id="pictureName" style="width:1000px;font-size:30px;" disabled="disabled" />
+        <img id="dialogPicture" />
+    </p>
+
+    <form>
+        <fieldset>
+            <input name="tags" id="tags" value="foo,bar,baz" />
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+    </form>
+</div>
+<style>
+    #pictureDetailsDialog {
+    }
+
+    #dialogPicture {
+        width: 1000px;
+    }
+</style>

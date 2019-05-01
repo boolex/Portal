@@ -13,54 +13,85 @@
 <link href="~/Content/jquery-ui.css" rel="stylesheet" />
 <link href="~/Content/jquery-ui.structure.css" rel="stylesheet" />
 <link href="~/Content/jquery-ui.theme.css" rel="stylesheet" />
-<div style="width: 1100px; margin: 0 auto;">
-    @Html.ActionLink("Articles", "Index", new { controller = "Article" })
-<div id="tabs">
-    <ul>
-        <li><a href="#tabs-1">Edit</a></li>
-        <li><a href="#tabs-2">View</a></li>
-    </ul>
-    <div id="tabs-1">
-        @using (Html.BeginForm("New", "Article", FormMethod.Post))
-        {
-            <table style="width: 100%">
-                <tr>
-                    <td>Title</td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.DisplayTextFor(x => x.Id)
-                        @Html.TextAreaFor(x => x.Title, new {id = "title", @class = "stretch title-text"})
+<link href="~/Content/portal.css" rel="stylesheet" />
+@*<script src="~/Scripts/jquery.filedrop.js"></script>*@
 
-                    </td>
-                </tr>
-                <tr>
-                    <td>Content</td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid black;">
-                        @Html.TextAreaFor(x => x.Content, new {id = "content", @class = "stretch content-text"})
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <hr/>
-                        <button type="submit" style="font-size: 50px; font-family: Garamond; padding: 10px 160px 10px 160px;">Create or save</button>
-                    </td>
-                </tr>
-            </table>
-        }
-    </div>
-    <div id="tabs-2">
-        <div>
-            <h1 id="articleTitle">@Model.Title</h1>
-            <div id="articleBody">
-                @Model.Content
+<div style="width: 1250px; margin: 0 auto;">
+    @Html.ActionLink("Articles", "Index", new { controller = "Article" })
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Edit</a></li>
+            <li><a href="#tabs-2">View</a></li>
+            @*<li><a href="#tabs-3">Pictures</a></li>*@
+        </ul>
+        <div id="tabs-1">
+            @using (Html.BeginForm("New", "Article", FormMethod.Post))
+            {
+                <table style="width: 100%">
+                    <tr>
+                        <td>Title</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayTextFor(x => x.Id)
+                            @Html.TextAreaFor(x => x.Title, new { id = "title", @class = "stretch title-text" })
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Content</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black;">
+                            @Html.TextAreaFor(x => x.Content, new { id = "content", @class = "stretch content-text" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <hr />
+                            <button type="submit" style="font-size: 50px; font-family: Garamond; padding: 10px 160px 10px 160px;">Create or save</button>
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+        <div id="tabs-2">
+            <div class="main">
+                <h1 id="articleTitle">@Model.Title</h1>
+                <div id="articleBody">
+
+                </div>
             </div>
         </div>
+        @*<div id="tabs-3">
+            <h2>Drag & Drop file upload </h2>
+            <div id="dropArea">
+                Drop your files here
+            </div>
+            <h4>Uploaded files : </h4>
+            <ul class="list-group" id="uploadList"></ul>
+        </div>*@
     </div>
 </div>
-    </div>
+
+
+<style>
+    #dropArea {
+        background: #b5b5b5;
+        border: black dashed 1px;
+        height: 50px;
+        text-align: center;
+        color: #fff;
+        padding-top: 12px;
+    }
+
+    .active-drop {
+        background: #77bafa !important;
+        border: solid 2px blue !important;
+        opacity: .5;
+        color: black !important;
+    }
+</style>
 <script>
     var onStart = function () {
         registerEditor();
@@ -85,14 +116,11 @@
     }
     function showTabs() {
         $("#tabs").tabs();
+        document.getElementById("articleBody").innerHTML = document.getElementById("content").innerText;
     }
 </script>
-<style>
-    body, table {
-        font-family: "Garamond";
-        font-size: 50px;
-    }
 
+<style>
     .stretch {
         width: 100%;
     }
@@ -108,3 +136,38 @@
     }
 </style>
 
+<script src="~/Scripts/jQuery.FileUpload/jquery.fileupload.js"></script>
+<script src="~/Scripts/jQuery.FileUpload/jquery.fileupload-ui.js"></script>
+
+<script src="~/Scripts/jQuery.FileUpload/jquery.iframe-transport.js"></script>
+
+<!--
+<script type="text/javascript">
+    $(function () {
+        $('#dropArea').filedrop({
+            url: '@Url.Action("UploadFiles", "Image")',
+            allowedfiletypes: ['image/jpeg', 'image/png', 'image/gif'],
+            allowedfileextensions: ['.jpg', '.jpeg', '.png', '.gif'],
+            paramname: 'files',
+            maxfiles: 5,
+            maxfilesize: 5, // in MB
+            dragOver: function () {
+                $('#dropArea').addClass('active-drop');
+            },
+            dragLeave: function () {
+                $('#dropArea').removeClass('active-drop');
+            },
+            drop: function () {
+                $('#dropArea').removeClass('active-drop');
+            },
+            afterAll: function (e) {
+                $('#dropArea').html('file(s) uploaded successfully');
+            },
+            uploadFinished: function (i, file, response, time) {
+                var name = file.name;
+                //$('#uploadList').append('<li class="list-group-item"><img src="Image/View/'+file.name+'"/></li>')
+            }
+        })
+    })
+</script>
+-->

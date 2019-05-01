@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using Portal.Articles;
+using Portal.Tags;
 
 namespace Portal
 {
@@ -31,6 +32,16 @@ namespace Portal
                .HasKey(x => x.Id)
                .Property(x => x.Id)
                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<Article>()
+                   .HasMany<Tag>(s => s.Tags)
+                   .WithMany(c => c.Articles)
+                   .Map(cs =>
+                   {
+                       cs.MapLeftKey("ArticleRefId");
+                       cs.MapRightKey("TagRefId");
+                       cs.ToTable("ArticleTag");
+                   });
 
             modelBuilder.Entity<ArticlePage>().HasRequired(x => x.Article);
         }
