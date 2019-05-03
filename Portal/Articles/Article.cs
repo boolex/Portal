@@ -1,4 +1,5 @@
-﻿using Portal.Tags;
+﻿using Portal.Images;
+using Portal.Tags;
 using System.Collections.Generic;
 
 namespace Portal
@@ -26,5 +27,6 @@ namespace Portal
         public string Content { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<Picture> Pictures { get; set; }
     }
 }

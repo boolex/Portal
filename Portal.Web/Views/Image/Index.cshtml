@@ -23,7 +23,7 @@
 <div id="pictureCatalog" style="width:100%">
     @foreach (var im in Model.Images())
     {
-        <a class="picture" name="@im" href="javascript:void(0)">  <img src='@Url.Action("Thumb", "Image", new {name=im})' class="thumb" /></a>
+        <a class="picture" tags="@im.Tags" name="@im.Name" href="javascript:void(0)">  <img src='@Url.Action("Thumb", "Image", new {name=im.Name})' class="thumb" /></a>
     }
 </div>
 
@@ -99,7 +99,7 @@
         });
         $("#tags").tagsInput({
             'autocomplete_url': "Tag/List",
-            'autocomplete': { option: "abs", option: "abbfd"},
+            'autocomplete': { option: "abs", option: "abbfd" },
             'height': '100px',
             'width': '300px',
             'interactive': true,
@@ -128,15 +128,19 @@
         pictureCatalog.insertBefore(imgLink, pictureCatalog.childNodes[0]);
         return imgLink;
     }
-    function imageSelected(name) {
+    function imageSelected(name, tags) {
         dialogPicture.setAttribute("src", "Image/View?name=" + name);
         document.getElementById("pictureName").value = name;
+        $("#tags").importTags("");
+        tags.split(",").forEach(function (tag) { $("#tags").addTag(tag); });
+
         window.dialog.dialog("open");
     }
     function showManageImagePanelOnClick(pictureElement) {
         pictureElement.addEventListener("click", function () {
             var name = pictureElement.getAttribute("name");
-            imageSelected(name);
+            var tags = pictureElement.getAttribute("tags");
+            imageSelected(name, tags);
         });
     }
     var pictures = document.getElementsByClassName("picture");
@@ -159,16 +163,19 @@
     function Save() {
         var name = document.getElementById("pictureName").value;
         var attributes = {};
+        attributes.tags = document.getElementById("tags").value;
+        var pictureElement = Array.from(document.querySelectorAll('.picture')).find(function (e) { return e.getAttribute("name") == name; });
+        pictureElement.setAttribute("tags", attributes.tags);
         var image = { name: name, attributes: attributes };
         UpdateImageAttributes(name, attributes);
     }
-    function UpdateImageAttributes(image) {
-        updateImagePost(image.name, image.attributes);
+    function UpdateImageAttributes(name, attributes) {
+        updateImagePost(name, attributes);
     }
-   
+
 </script>
 <div id="pictureDetailsDialog" title="Picture details" style="background-color: #034E5A">
-    
+
     <p class="validateTips">
         <input type="text" id="pictureName" style="width:1000px;font-size:30px;" disabled="disabled" />
         <img id="dialogPicture" />
@@ -176,7 +183,7 @@
 
     <form>
         <fieldset>
-            <input name="tags" id="tags" value="foo,bar,baz" />
+            <input name="tags" id="tags" value="" />
             <label for="name">Name</label>
             <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
             <label for="email">Email</label>

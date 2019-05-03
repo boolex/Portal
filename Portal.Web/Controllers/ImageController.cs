@@ -57,7 +57,10 @@ namespace Portal.Web.Controllers
         [HttpPost]
         public void Update(string name, Dictionary<string, string> attributes)
         {
-
+            //using (PortalContext context = new PortalContext())
+            //{
+            //    var image = context.im
+            //}
         }
     }
 }

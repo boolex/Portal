@@ -49,6 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Articles\Article.cs" />
+    <Compile Include="Migrations\201905030324218_AddedPictureAndTags.cs" />
+    <Compile Include="Migrations\201905030324218_AddedPictureAndTags.Designer.cs">
+      <DependentUpon>201905030324218_AddedPictureAndTags.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pictures\Picture.cs" />
     <Compile Include="Migrations\201904240749247_AddedArticleComments.cs" />
     <Compile Include="Migrations\201904240749247_AddedArticleComments.Designer.cs">
       <DependentUpon>201904240749247_AddedArticleComments.cs</DependentUpon>
@@ -87,6 +92,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905011737487_AddedTags.resx">
       <DependentUpon>201905011737487_AddedTags.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905030324218_AddedPictureAndTags.resx">
+      <DependentUpon>201905030324218_AddedPictureAndTags.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

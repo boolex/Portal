@@ -13,7 +13,7 @@ namespace Portal.Web.Models
         {
             this.baseFolder = baseFolder;
         }
-        public List<string> Images(string tags = null)
+        public List<PortalImage> Images(string tags = null)
         {
             return new ImageCatalog(baseFolder).Fetch().ToList();
         }
@@ -25,9 +25,16 @@ namespace Portal.Web.Models
         {
             this.baseFolder = baseFolder;
         }
-        public IEnumerable<string> Fetch()
+        public IEnumerable<PortalImage> Fetch()
         {
-            return Directory.GetFiles(Path.Combine(baseFolder), "*.png").Where(x => !x.Contains("thumb")).Select(x => new FileInfo(x).Name.Replace(".png", ""));
+            var images = Directory.GetFiles(Path.Combine(baseFolder), "*.png").Where(x => !x.Contains("thumb")).Select(x => new FileInfo(x).Name.Replace(".png", ""));
+            return
+               images.Select(x => new PortalImage() { Name = x, Tags = "aaaa,bdsadsa,casdasd" });
         }
+    }
+    public class PortalImage
+    {
+        public string Name { get; set; }
+        public string Tags { get; set; }
     }
 }
